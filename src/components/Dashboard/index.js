@@ -1,10 +1,40 @@
 import React from 'react'
+import clsx from 'clsx';
 import { useAuth } from '../../contexts/AuthContext'
 import { useHistory } from 'react-router-dom'
+import { makeStyles } from '@material-ui/core/styles';
+import {Container, Grid, Paper } from '@material-ui/core'
+import CardLancamento from './CardLancamento'
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+    },
+    content: {
+        flexGrow: 1,
+        height: '100vh',
+        overflow: 'auto',
+    },
+    container: {
+        paddingTop: theme.spacing(10),
+        paddingBottom: theme.spacing(4),
+    },
+    paper: {
+        padding: theme.spacing(2),
+        display: 'flex',
+        flexDirection: 'column',
+    },
+        fixedHeight: {
+        height: 100,
+    },
+    table: {
+        marginTop: theme.spacing(4)
+    },
 
+}));
 
 const Index = () => {
+    const classes = useStyles();
     const [error, setError] = React.useState("")
     const { logout, currentUser } = useAuth()
     const history = useHistory()
@@ -19,18 +49,41 @@ const Index = () => {
             setError('Erro ao deslogar!')
         }
     }
+
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
     return (
         <>
-            <div>
-                <div>
-                    <h2>Perfil</h2>
-                    {error && <p>{error}</p>}
-                    <strong>Usuário: </strong>{currentUser.email}
-                </div>
-            </div>
-            <div>
-                <button onClick={handleLogout}>Logout</button>
-            </div>
+        <div className={classes.root}>
+            <main className={classes.content}>
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={4} lg={4}>
+                            <Paper className={fixedHeightPaper}>
+                                <CardLancamento />
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} md={4} lg={4}>
+                            <Paper className={fixedHeightPaper}>
+                                <CardLancamento />
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} md={4} lg={4}>
+                            <Paper className={fixedHeightPaper}>
+                                <CardLancamento />
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} className={classes.table}>
+                        <Paper className={classes.paper}>
+                            <h1>Tabela</h1>
+                        </Paper>
+                    </Grid>
+                </Container>
+            </main>
+        </div>
+        <strong>Usuário: </strong>{currentUser.email}<br></br>
+        <button onClick={handleLogout}>Logout</button>
         </>
     )
 }
