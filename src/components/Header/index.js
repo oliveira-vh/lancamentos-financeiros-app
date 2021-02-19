@@ -12,10 +12,6 @@ const headersData = [
       label: "Lançamento",
       href: "/lancamento",
     },
-    {
-      label: "Logout",
-      href: "/logout",
-    },
   ];
 
 const useStyles = makeStyles(() => ({
