@@ -1,8 +1,27 @@
 import React from 'react'
+import { Button, CssBaseline, TextField, Typography, Container, Link } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles';
 import { useAuth } from '../../contexts/AuthContext'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    form: {
+      width: '100%',
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+}))
 
 const Index = () => {
+    const classes = useStyles()
     const emailRef = React.useRef()
     const passwordRef = React.useRef()
     const passwordConfirmRef = React.useRef()
@@ -30,28 +49,64 @@ const Index = () => {
     }
 
     return (
-        <div>
-            <div>
-                <h2>Sign Up</h2>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <Typography component="h1" variant="h5">
+                Cadastro
+                </Typography>
                 {error && <p>{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <div id='email'>
-                        <label>Email</label>
-                        <input type='email' ref={emailRef} required/>
-                    </div>
-                    <div id='password'>
-                        <label>Senha</label>
-                        <input type='password' ref={passwordRef} required/>
-                    </div>
-                    <div id='password-confirm'>
-                        <label>Confirmação da Senha</label>
-                        <input type='password' ref={passwordConfirmRef} required/>
-                    </div>
-                    <button disabled={loading} type='submit'>Criar conta!</button>
+                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                <TextField
+                    inputRef={emailRef}
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    name="email"
+                    type="email"
+                    autoFocus
+                />
+                <TextField
+                    inputRef={passwordRef}
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Senha"
+                    type="password"
+                    id="password"
+                />
+                <TextField
+                    inputRef={passwordConfirmRef}
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="passwordConfirm"
+                    label="Confirmar senha"
+                    type="password"
+                    id="passwordConfirm"
+                />
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    disabled={loading}
+                >
+                    Cadastrar
+                </Button>   
+                    <Link href="/login" variant="body2">
+                        {"Já tem uma conta? Faça Login!"}
+                    </Link>
                 </form>
             </div>
-            <div>Já tem uma conta? <Link to='/login'>Faça Login.</Link></div>
-        </div>
+        </Container>
     )
 }
 
