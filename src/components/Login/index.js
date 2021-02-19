@@ -37,8 +37,8 @@ const Index = () => {
             setLoading(true)
             await login(emailRef.current.value, passwordRef.current.value)
             history.push('/')
-        } catch(e){
-            setError(`${e}`)
+        } catch{
+            setError('Erro ao logar! Verifique suas credenciais.')
         }
         setLoading(false)
     }
