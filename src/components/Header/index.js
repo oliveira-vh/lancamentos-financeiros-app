@@ -5,18 +5,17 @@ import { Link } from "react-router-dom";
 
 const headersData = [
     {
-        label: "Dashboard",
-        href: "/",
+      label: "Dashboard",
+      href: "/",
     },
     {
-      label: "Lançamento",
-      href: "/lancamento",
+      label: "Lançamentos",
+      href: "/lancamentos",
     },
   ];
 
 const useStyles = makeStyles(() => ({
     header: {
-      backgroundColor: "#400CCC",
       paddingRight: "79px",
       paddingLeft: "118px",
       "@media (max-width: 900px)": {
@@ -108,15 +107,7 @@ export default function Header() {
   const getDrawerChoices = () => {
     return headersData.map(({ label, href }) => {
       return (
-        <Link
-          {...{
-            component: Link,
-            to: href,
-            color: "inherit",
-            style: { textDecoration: "none" },
-            key: label,
-          }}
-        >
+        <Link to={href} color="inherit" style={{'textDecoration': "none" }} key={label}>
           <MenuItem>{label}</MenuItem>
         </Link>
       );
@@ -126,15 +117,7 @@ export default function Header() {
   const getMenuButtons = () => {
     return headersData.map(({ label, href }) => {
       return (
-        <Button
-          {...{
-            key: label,
-            color: "inherit",
-            to: href,
-            component: Link,
-            className: menuButton
-          }}
-        >
+        <Button to={href} color="inherit" component={Link} className={menuButton} key={label}>
           {label}
         </Button>
       );

@@ -19,18 +19,6 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(10),
         paddingBottom: theme.spacing(4),
     },
-    paper: {
-        padding: theme.spacing(2),
-        display: 'flex',
-        flexDirection: 'column',
-    },
-        fixedHeight: {
-        height: 100,
-    },
-    table: {
-        marginTop: theme.spacing(4)
-    },
-
 }));
 
 const Index = () => {
@@ -73,11 +61,6 @@ const Index = () => {
                                 <CardLancamento />
                             </Paper>
                         </Grid>
-                    </Grid>
-                    <Grid item xs={12} className={classes.table}>
-                        <Paper className={classes.paper}>
-                            <h1>Tabela</h1>
-                        </Paper>
                     </Grid>
                 </Container>
             </main>
