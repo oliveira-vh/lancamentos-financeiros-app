@@ -8,19 +8,22 @@ import AddLancamento from './AddLancamento'
 import Login from './Login'
 import PrivateRoute from './PrivateRoute'
 import Header from '../components/Header'
+import Logout from '../components/Logout'
+
 
 function App() {
   return (
     <Router>
       <AuthProvider>
         <Switch>
-          <Route path='/login' component={Login}/>
-          <Route path='/signup' component={SignUp}/>
+          <Route exact path='/login' component={Login}/>
+          <Route exact path='/signup' component={SignUp}/>
           <div>
             <Header/>
             <PrivateRoute exact path='/' component={Dashboard} />
             <PrivateRoute exact path='/lancamentos' component={Lancamentos} />
             <PrivateRoute exact path='/add' component={AddLancamento} />
+            <PrivateRoute exact path='/logout' component={Logout} />
           </div>
         </Switch>
       </AuthProvider>

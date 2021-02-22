@@ -88,8 +88,8 @@ const Index = () => {
                     fullWidth
                     onChange={handleChange}
                     >
-                    <MenuItem value='entrada'>Entrada</MenuItem>
-                    <MenuItem value='saida'>Saída</MenuItem>
+                    <MenuItem value='Entrada'>Entrada</MenuItem>
+                    <MenuItem value='Saída'>Saída</MenuItem>
                 </Select>
                 </FormControl>
                 <Button
