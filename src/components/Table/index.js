@@ -17,6 +17,7 @@ import LastPage from '@material-ui/icons/LastPage';
 import Search from '@material-ui/icons/Search';
 import Alert from '@material-ui/lab/Alert';
 
+
 const useStyles = makeStyles((theme) => ({
   button: {
     marginBottom: theme.spacing(2)
@@ -39,20 +40,22 @@ const tableIcons = {
 const Index = () => {
   const classes = useStyles();
 
+
   var columns = [
     {title: "Título", field: "titulo"},
     {title: "Tipo", field: "tipo"},
     {title: "Valor", field: "valor"}
   ]
-  const [lancamentos, setLancamentos] = useState([]); 
+  const [lancamentos, setLancamentos] = useState([])
   const [error, setError] = useState(false)
 
-  useEffect(() => {
+  const getLancamentos = async () => {
+    const data = await db.collection('lancamentos').get()
+    setLancamentos(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
+  }
+
+ useEffect(() => {
     try{
-      const getLancamentos = async () => {
-        const data = await db.collection('lancamentos').get()
-        setLancamentos(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
-      }
       getLancamentos()
       setError(false)
     } catch {
@@ -60,8 +63,13 @@ const Index = () => {
     }
   }, [])
 
-  const handleRowDelete = () => {
-    
+  const handleDelete = (id) => {
+    try{
+      db.collection('lancamentos').doc(id).delete()
+    }catch{
+      setError(true)
+    }
+
   }
 
 
@@ -81,15 +89,19 @@ const Index = () => {
               Adicionar Lançamento
             </Button>
             <MaterialTable
-              title="Lançamentos "
+              title="Lançamentos"
               columns={columns}
               data={lancamentos}
               icons={tableIcons}
               editable={{
-                onRowDelete: (oldData) =>
-                  new Promise((resolve) => {
-                    handleRowDelete(oldData, resolve)
-                  }),
+                onRowDelete: (doc) => {
+                  handleDelete(doc.id)
+                  return new Promise((resolve) => {
+                    setTimeout(() => {
+                      resolve(getLancamentos())
+                    }, 500)
+                  })
+                }
               }}
               localization={{
                 body: {
@@ -100,7 +112,7 @@ const Index = () => {
                       cancelTooltip: 'Cancelar',
                       deleteTooltip: 'Apagar'
                     },
-                  emptyDataSourceMessage: 'Carregando...',
+                  emptyDataSourceMessage: 'Sem dados',
                 },
                 header: {
                   actions: 'Ação'
