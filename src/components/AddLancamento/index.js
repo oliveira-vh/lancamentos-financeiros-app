@@ -1,7 +1,8 @@
 import React from 'react'
+import { db } from '../../firebase'
 import { Button, CssBaseline, TextField, Typography, Container, Select, FormControl, MenuItem, InputLabel } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/core/styles'
-import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -25,26 +26,37 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = () => {
     const classes = useStyles()
-    const tituloLancamento = React.useRef()
-    const valorLancamento = React.useRef()
+    const [tituloLancamento, setTituloLancamento] = React.useState('')
+    const [valorLancamento, setValorLancamento] = React.useState('')
+    const [tipoLancamento, setTipoLancamento] = React.useState('')
     const [error, setError] = React.useState('')
-    const [loading, setLoading] = React.useState(false)
-    const [tipoLancamento, setTipoLancamento] = React.useState('');
-    const history = useHistory()
+    const [success, setSuccess] = React.useState('')
+    
+    const handleChangeTitulo = (event) => {
+        setTituloLancamento(event.target.value);
+    };
 
-    const handleChange = (event) => {
+    const handleChangeTipo = (event) => {
         setTipoLancamento(event.target.value);
+    };
+
+    const handleChangeValor = (event) => {
+        setValorLancamento(event.target.value);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-
         try{
-           
-        } catch(e){
-            
+           db.collection('lancamentos').add({
+               tipo: tipoLancamento, 
+               titulo: tituloLancamento,
+               valor: valorLancamento
+           })
+           setSuccess('Lançamento adicionado com sucesso!')
+        } catch{
+            setError('Erro. Tente Novamente!')
         }
-        setLoading(false)
+        
     }
 
     return (
@@ -54,10 +66,19 @@ const Index = () => {
                 <Typography component="h1" variant="h5">
                 Adicionar Lançamento
                 </Typography>
-                {error && <p>{error}</p>}
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                {error && 
+                    <Alert onClose={() => setError('')} severity='error'>
+                        {error}
+                    </Alert>
+                }
+                {success && 
+                    <Alert onClose={() => setSuccess('')}>
+                        {success}
+                    </Alert>
+                }  
+                <form className={classes.form} onSubmit={handleSubmit}>
                 <TextField
-                    inputRef={tituloLancamento}
+                    onChange={handleChangeTitulo}
                     variant="outlined"
                     margin="normal"
                     required
@@ -69,7 +90,7 @@ const Index = () => {
                     autoFocus
                 />
                 <TextField
-                    inputRef={valorLancamento}
+                    onChange={handleChangeValor}
                     variant="outlined"
                     margin="normal"
                     required
@@ -86,7 +107,8 @@ const Index = () => {
                     id="tipoLancamento"
                     value={tipoLancamento}
                     fullWidth
-                    onChange={handleChange}
+                    onChange={handleChangeTipo}
+                    required
                     >
                     <MenuItem value='Entrada'>Entrada</MenuItem>
                     <MenuItem value='Saída'>Saída</MenuItem>
@@ -98,7 +120,6 @@ const Index = () => {
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    disabled={loading}
                 >
                     Salvar
                 </Button>

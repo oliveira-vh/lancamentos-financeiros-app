@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, CssBaseline, TextField, Typography, Container, Link } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAuth } from '../../contexts/AuthContext'
 import { useHistory } from 'react-router-dom'
@@ -50,7 +51,7 @@ const Index = () => {
                 <Typography component="h1" variant="h5">
                 Entrar
                 </Typography>
-                {error && <p>{error}</p>}
+                {error && <Alert severity='error'>{error}</Alert>}
                 <form className={classes.form} noValidate onSubmit={handleSubmit}>
                 <TextField
                     inputRef={emailRef}

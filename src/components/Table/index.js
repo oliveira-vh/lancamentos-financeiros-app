@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { db } from '../../firebase'
 import { forwardRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
@@ -14,7 +15,6 @@ import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
 import Search from '@material-ui/icons/Search';
-import axios from 'axios'
 import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,52 +36,32 @@ const tableIcons = {
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
 };
 
-const api = axios.create({
-  baseURL: `https://reqres.in/api`
-})
-
 const Index = () => {
   const classes = useStyles();
 
   var columns = [
-    {title: "ID", field: "id"},
-    {title: "Título", field: "first_name"},
-    {title: "Tipo", field: "last_name"},
-    {title: "Valor", field: "email"}
+    {title: "Título", field: "titulo"},
+    {title: "Tipo", field: "tipo"},
+    {title: "Valor", field: "valor"}
   ]
-  const [data, setData] = useState([]); //table data
-
-  //for error handling
+  const [lancamentos, setLancamentos] = useState([]); 
   const [error, setError] = useState(false)
-  const [errorMessages, setErrorMessages] = useState([])
 
-  useEffect(() => { 
-    api.get("/users")
-        .then(res => {               
-            setData(res.data.data)
-         })
-         .catch(error=>{
-             console.log("Erro")
-         })
+  useEffect(() => {
+    try{
+      const getLancamentos = async () => {
+        const data = await db.collection('lancamentos').get()
+        setLancamentos(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
+      }
+      getLancamentos()
+      setError(false)
+    } catch {
+      setError(true)
+    }
   }, [])
 
-
-
-  const handleRowDelete = (oldData, resolve) => {
+  const handleRowDelete = () => {
     
-    api.delete("/users/"+oldData.id)
-      .then(res => {
-        const dataDelete = [...data];
-        const index = oldData.tableData.id;
-        dataDelete.splice(index, 1);
-        setData([...dataDelete]);
-        resolve()
-      })
-      .catch(error => {
-        setErrorMessages(["Exclusão falhou!"])
-        setError(true)
-        resolve()
-      })
   }
 
 
@@ -93,9 +73,7 @@ const Index = () => {
           <div>
             {error && 
               <Alert severity="error">
-                  {errorMessages.map((msg, i) => {
-                      return <div key={i}>{msg}</div>
-                  })}
+                  {'Erro ao baixar os lançamentos. Favor tentar novamente.'}
               </Alert>
             }       
           </div>
@@ -105,7 +83,7 @@ const Index = () => {
             <MaterialTable
               title="Lançamentos "
               columns={columns}
-              data={data}
+              data={lancamentos}
               icons={tableIcons}
               editable={{
                 onRowDelete: (oldData) =>
@@ -122,8 +100,7 @@ const Index = () => {
                       cancelTooltip: 'Cancelar',
                       deleteTooltip: 'Apagar'
                     },
-                  emptyDataSourceMessage: 'Sem registros para exibir',
-                  deleteText: 'Tem de que deseja exlcuir esta linha?',
+                  emptyDataSourceMessage: 'Carregando...',
                 },
                 header: {
                   actions: 'Ação'
