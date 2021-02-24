@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { db } from '../../firebase'
 import { Button, CssBaseline, TextField, Typography, Container, Select, FormControl, MenuItem, InputLabel } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = () => {
     const classes = useStyles()
-    const [tituloLancamento, setTituloLancamento] = React.useState('')
-    const [valorLancamento, setValorLancamento] = React.useState('')
-    const [tipoLancamento, setTipoLancamento] = React.useState('')
-    const [error, setError] = React.useState('')
-    const [success, setSuccess] = React.useState('')
+    const [tituloLancamento, setTituloLancamento] = useState('')
+    const [valorLancamento, setValorLancamento] = useState('')
+    const [tipoLancamento, setTipoLancamento] = useState('')
+    const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
     
     
     const handleChangeTitulo = (event) => {
@@ -49,12 +49,16 @@ const Index = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         try{
-           db.collection('lancamentos').add({
-               tipo: tipoLancamento, 
-               titulo: tituloLancamento,
-               valor: valorLancamento
-           })
-           setSuccess('Lançamento adicionado com sucesso!')
+            if(/(?<=^| )\d+(\.\d+)?(?=$| )|(?<=^| )\.\d+(?=$| )/.test(valorLancamento)){
+                db.collection('lancamentos').add({
+                    tipo: tipoLancamento, 
+                    titulo: tituloLancamento,
+                    valor: valorLancamento
+                })
+                setSuccess('Lançamento adicionado com sucesso!')
+            } else {
+                setError('Erro. Valor precisa ser um número válido e separado por ponto!')
+            }
         } catch{
             setError('Erro. Tente Novamente!')
         }
@@ -98,8 +102,8 @@ const Index = () => {
                     required
                     fullWidth
                     name="valorLancamento"
-                    label="Valor"
-                    type="number"
+                    label="Valor    "
+                    type="text"
                     id="valorLancamento"
                 />
                 <FormControl className={classes.select}>

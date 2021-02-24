@@ -40,11 +40,10 @@ const tableIcons = {
 const Index = () => {
   const classes = useStyles();
 
-
   var columns = [
     {title: "Título", field: "titulo"},
     {title: "Tipo", field: "tipo"},
-    {title: "Valor", field: "valor"}
+    {title: "Valor (R$)", field: "valor"}
   ]
   const [lancamentos, setLancamentos] = useState([])
   const [error, setError] = useState(false)
@@ -69,9 +68,7 @@ const Index = () => {
     }catch{
       setError(true)
     }
-
   }
-
 
   return (
     <div>

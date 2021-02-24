@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import { Button, CssBaseline, TextField, Typography, Container, Link } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,12 +23,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = () => {
     const classes = useStyles()
-    const emailRef = React.useRef()
-    const passwordRef = React.useRef()
-    const passwordConfirmRef = React.useRef()
+    const emailRef = useRef()
+    const passwordRef = useRef()
+    const passwordConfirmRef = useRef()
     const { signup } = useAuth()
-    const [error, setError] = React.useState('')
-    const [loading, setLoading] = React.useState(false)
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const history = useHistory()
 
     const handleSubmit = async (event) => {

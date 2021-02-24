@@ -18,13 +18,13 @@ function App() {
         <Switch>
           <Route exact path='/login' component={Login}/>
           <Route exact path='/signup' component={SignUp}/>
-          <div>
+          <>
             <Header/>
             <PrivateRoute exact path='/' component={Dashboard} />
             <PrivateRoute exact path='/lancamentos' component={Lancamentos} />
             <PrivateRoute exact path='/add' component={AddLancamento} />
             <PrivateRoute exact path='/logout' component={Logout} />
-          </div>
+          </>
         </Switch>
       </AuthProvider>
     </Router>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useHistory } from 'react-router-dom'
 
@@ -11,7 +11,7 @@ const Index = () => {
         history.push('/login')
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         handleLogout()
     })
     return (

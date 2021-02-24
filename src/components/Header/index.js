@@ -1,6 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, makeStyles, Button, IconButton, Drawer, MenuItem } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import React from "react";
 import { Link } from "react-router-dom";
 
 const headersData = [
@@ -48,13 +48,13 @@ const useStyles = makeStyles(() => ({
 export default function Header() {
   const { header, logo, menuButton, toolbar, drawerContainer } = useStyles();
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     mobileView: false,
     drawerOpen: false
   });
   const { mobileView, drawerOpen } = state;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const setResponsiveness = () => {
       return window.innerWidth < 900
         ? setState((prevState) => ({ ...prevState, mobileView: true }))

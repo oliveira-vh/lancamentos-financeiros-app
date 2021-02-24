@@ -5,10 +5,10 @@ const CardLancamento = ({title, valor}) => {
   return (
     <div>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
-        Entrada
+        {title}
       </Typography>
       <Typography component="p" variant="h4">
-        R$ 20.000
+        R$ {valor}
       </Typography>
     </div>
   );
