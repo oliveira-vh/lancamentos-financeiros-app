@@ -1,14 +1,14 @@
 import React from 'react';
-import SignUp from './SignUp'
-import { AuthProvider } from '../contexts/AuthContext'
+import SignUp from './views/SignUp'
+import { AuthProvider } from './contexts/AuthContext'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import Dashboard from './Dashboard'
-import Lancamentos from './Lancamentos'
-import AddLancamento from './AddLancamento'
-import Login from './Login'
-import PrivateRoute from './PrivateRoute'
-import Header from '../components/Header'
-import Logout from '../components/Logout'
+import Dashboard from './views/Dashboard'
+import Lancamentos from './components/Lancamentos'
+import AddLancamento from './views/AddLancamento'
+import Login from './views/Login'
+import PrivateRoute from './components/PrivateRoute'
+import Header from './components/Header'
+import Logout from './components/Logout'
 
 
 function App() {
